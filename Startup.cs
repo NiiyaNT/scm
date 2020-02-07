@@ -126,7 +126,7 @@ namespace Scm
             //Each request uses the same instance
             services.AddSingleton(mapper);
             //Each request creates a new instance
-            
+            services.AddScoped<EmpleadoRepository>();
             #endregion
         }
 

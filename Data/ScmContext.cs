@@ -41,6 +41,8 @@ namespace Scm.Data
                 x.HasKey(x=>x.FolioVale);
                 x.Property(x=>x.Monto).IsRequired();
                 x.Property(x=>x.FechaExpedicionVale).IsRequired();
+                x.Property(x=>x.Empresa).IsRequired();
+                x.Property(x=>x.RegistroValeIdRegistroVale).IsRequired();
             });
 
             base.OnModelCreating(builder);

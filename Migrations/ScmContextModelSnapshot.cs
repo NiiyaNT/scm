@@ -17,76 +17,6 @@ namespace scm.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CargaDescarga.Empleado", b =>
-                {
-                    b.Property<int>("IdEmpleado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("NumeroContacto")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdEmpleado");
-
-                    b.ToTable("Empleados");
-                });
-
-            modelBuilder.Entity("CargaDescarga.RegistroVale", b =>
-                {
-                    b.Property<int>("IdRegistroVale")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("IdEmpleado")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.HasKey("IdRegistroVale");
-
-                    b.HasIndex("IdEmpleado");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("RegistroVales");
-                });
-
-            modelBuilder.Entity("CargaDescarga.Vale", b =>
-                {
-                    b.Property<string>("FolioVale")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Empresa")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<decimal>("FechaExpedicionVale")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int?>("RegistroValeIdRegistroVale")
-                        .HasColumnType("int");
-
-                    b.HasKey("FolioVale");
-
-                    b.HasIndex("RegistroValeIdRegistroVale");
-
-                    b.ToTable("Vales");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -279,24 +209,77 @@ namespace scm.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("CargaDescarga.RegistroVale", b =>
+            modelBuilder.Entity("Scm.Domain.Empleado", b =>
                 {
-                    b.HasOne("CargaDescarga.Empleado", "Empleado")
-                        .WithMany()
-                        .HasForeignKey("IdEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("IdEmpleado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasOne("Scm.Domain.AppUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("NumeroContacto")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdEmpleado");
+
+                    b.ToTable("Empleados");
                 });
 
-            modelBuilder.Entity("CargaDescarga.Vale", b =>
+            modelBuilder.Entity("Scm.Domain.RegistroVale", b =>
                 {
-                    b.HasOne("CargaDescarga.RegistroVale", null)
-                        .WithMany("Vales")
-                        .HasForeignKey("RegistroValeIdRegistroVale");
+                    b.Property<int>("IdRegistroVale")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("IdEmpleado")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalVale")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.HasKey("IdRegistroVale");
+
+                    b.HasIndex("IdEmpleado");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("RegistroVales");
+                });
+
+            modelBuilder.Entity("Scm.Domain.Vale", b =>
+                {
+                    b.Property<string>("FolioVale")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Empresa")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<decimal>("FechaExpedicionVale")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("RegistroValeIdRegistroVale")
+                        .HasColumnType("int");
+
+                    b.HasKey("FolioVale");
+
+                    b.HasIndex("RegistroValeIdRegistroVale");
+
+                    b.ToTable("Vales");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -348,6 +331,26 @@ namespace scm.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Scm.Domain.RegistroVale", b =>
+                {
+                    b.HasOne("Scm.Domain.Empleado", "Empleado")
+                        .WithMany()
+                        .HasForeignKey("IdEmpleado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Scm.Domain.AppUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId");
+                });
+
+            modelBuilder.Entity("Scm.Domain.Vale", b =>
+                {
+                    b.HasOne("Scm.Domain.RegistroVale", null)
+                        .WithMany("Vales")
+                        .HasForeignKey("RegistroValeIdRegistroVale");
                 });
 #pragma warning restore 612, 618
         }
